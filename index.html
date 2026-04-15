@@ -1,126 +1,50 @@
 <!-- ================= AUTH ================= -->
-  <div id="screen-auth" class="screen active">
-    <div class="auth-container">
-      <div class="auth-card">
-        <h1 data-i18n="app_name">ClipForge</h1>
-        <p data-i18n="welcome" style="color:var(--text-2); margin-bottom:32px;">
-          Crie vídeos incríveis com facilidade
-        </p>
-
-        <form id="form-login" onsubmit="return false">
-          <input type="email" id="email" placeholder="Seu email" data-i18n-placeholder="email">
-          <input type="password" id="password" placeholder="Senha" data-i18n-placeholder="password">
-          <button onclick="doLogin()" data-i18n="login">Entrar</button>
-        </form>
-
-        <p style="margin-top:24px; color:var(--text-3); font-size:14px;">
-          <span data-i18n="no_account">Não tem conta?</span> 
-          <a href="#" style="color:var(--accent);">Criar agora</a>
-        </p>
+<div id="screen-auth" class="screen active">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="es">ES</button>
+        <button class="lang-btn" data-lang="zh">中文</button>
       </div>
+
+      <h1 data-i18n="app_name">ClipForge</h1>
+      <p data-i18n="welcome" class="subtitle">Crie vídeos incríveis com facilidade</p>
+
+      <form id="form-login">
+        <div class="input-group">
+          <label for="email" class="sr-only" data-i18n="email">Seu email</label>
+          <input type="email" id="email" required placeholder="Seu email" data-i18n-placeholder="email">
+        </div>
+        <div class="input-group">
+          <label for="password" class="sr-only" data-i18n="password">Senha</label>
+          <input type="password" id="password" required minlength="6" placeholder="Senha" data-i18n-placeholder="password">
+        </div>
+        <button type="submit" id="btn-login" data-i18n="login">Entrar</button>
+        <p id="auth-error" class="error-msg" aria-live="polite"></p>
+      </form>
+
+      <p class="auth-toggle">
+        <span data-i18n="no_account">Não tem conta?</span>
+        <a href="#" id="toggle-signup" data-i18n="signup_now">Criar agora</a>
+      </p>
     </div>
   </div>
+</div>
 
-  <!-- ================= DASHBOARD ================= -->
-  <div id="screen-dashboard" class="screen">
+<!-- ================= DASHBOARD ================= -->
+<div id="screen-dashboard" class="screen">
+  <header class="app-header">
     <h1 data-i18n="dashboard">Dashboard</h1>
-    <button onclick="navigateTo('editor')" data-i18n="new_project">
-      + Novo Projeto
-    </button>
-  </div>
+    <button id="btn-logout" data-i18n="logout">Sair</button>
+  </header>
+  <button id="btn-new-project" data-i18n="new_project">+ Novo Projeto</button>
+</div>
 
-  <!-- ================= EDITOR ================= -->
-  <div id="screen-editor" class="screen">
-    <button onclick="navigateTo('dashboard')" data-i18n="back">← Voltar</button>
-    <h1 data-i18n="video_editor">Editor de Vídeo</h1>
-    <!-- Aqui você pode expandir o editor completo depois -->
-  </div>
-
-<script>
-// ==================== I18N - Traduções ====================
-const translations = {
-  pt: {
-    app_name: "ClipForge",
-    welcome: "Crie vídeos incríveis com facilidade",
-    email: "Seu email",
-    password: "Senha",
-    login: "Entrar",
-    no_account: "Não tem conta?",
-    dashboard: "Dashboard",
-    new_project: "+ Novo Projeto",
-    back: "← Voltar",
-    video_editor: "Editor de Vídeo"
-  },
-  en: {
-    app_name: "ClipForge",
-    welcome: "Create amazing videos with ease",
-    email: "Your email",
-    password: "Password",
-    login: "Sign In",
-    no_account: "Don't have an account?",
-    dashboard: "Dashboard",
-    new_project: "+ New Project",
-    back: "← Back",
-    video_editor: "Video Editor"
-  },
-  es: {
-    app_name: "ClipForge",
-    welcome: "Crea videos increíbles con facilidad",
-    email: "Tu correo electrónico",
-    password: "Contraseña",
-    login: "Iniciar sesión",
-    no_account: "¿No tienes cuenta?",
-    dashboard: "Panel",
-    new_project: "+ Nuevo Proyecto",
-    back: "← Atrás",
-    video_editor: "Editor de Video"
-  },
-  zh: {
-    app_name: "ClipForge",
-    welcome: "轻松制作精彩视频",
-    email: "您的邮箱",
-    password: "密码",
-    login: "登录",
-    no_account: "还没有账号？",
-    dashboard: "仪表盘",
-    new_project: "+ 新项目",
-    back: "← 返回",
-    video_editor: "视频编辑器"
-  }
-};
-
-let currentLang = 'pt';
-
-// ==================== Funções ====================
-function setLanguage(lang) {
-  currentLang = lang;
-  
-  // Atualiza botões de idioma
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.lang === lang);
-  });
-
-  // Atualiza todos os textos
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
-  });
-
-  // Atualiza placeholders
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (translations[lang][key]) {
-      el.placeholder = translations[lang][key];
-    }
-  });
-
-  // Atualiza lang do HTML
-  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang + '-' + (lang === 'pt' ? 'BR' : lang.toUpperCase());
-}
-
-window.navigateTo = function(screen) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
-};
+<!-- ================= EDITOR ================= -->
+<div id="screen-editor" class="screen">
+  <button id="btn-back-dash" data-i18n="back">← Voltar</button>
+  <h1 data-i18n="video_editor">Editor de Vídeo</h1>
+  <div id="editor-root"></div>
+</div>

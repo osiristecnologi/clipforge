@@ -1,40 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClipForge</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClipForge</title>
 
-  <!-- FONTES -->
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  background:#0c0c14;
+  color:#fff;
+}
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+/* TELAS */
+.screen {
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+}
+
+.screen.active {
+  display:flex;
+}
+
+/* LOGIN */
+.login-box {
+  background:#1a1a2e;
+  padding:30px;
+  border-radius:12px;
+  text-align:center;
+}
+
+input {
+  display:block;
+  width:250px;
+  padding:10px;
+  margin:10px auto;
+}
+
+button {
+  padding:10px 20px;
+  background:#00e5ff;
+  border:none;
+  cursor:pointer;
+}
+
+/* DASHBOARD */
+#dashboard {
+  flex-direction:column;
+  align-items:center;
+}
+
+.topbar {
+  width:100%;
+  padding:15px;
+  background:#111;
+  display:flex;
+  justify-content:space-between;
+}
+
+.editor {
+  margin-top:20px;
+  padding:20px;
+  background:#1a1a2e;
+  border-radius:12px;
+}
+</style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div id="app">
-  <h2>Login</h2>
-
-  <input type="email" id="email" placeholder="Seu email">
-  <br><br>
-
-  <input type="password" id="senha" placeholder="Sua senha">
-  <br><br>
-
-  <button onclick="login()">Entrar</button>
+<div id="auth" class="screen active">
+  <div class="login-box">
+    <h2>ClipForge</h2>
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+  </div>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
-  <h1>Bem-vindo ao ClipForge 🚀</h1>
-  <button onclick="logout()">Sair</button>
+<div id="dashboard" class="screen">
+  <div class="topbar">
+    <span>ClipForge</span>
+    <button onclick="logout()">Sair</button>
+  </div>
+
+  <h2>Dashboard</h2>
+  <button onclick="openEditor()">Novo Projeto</button>
 </div>
 
-<!-- SCRIPT -->
-<script src="app.js"></script>
+<!-- EDITOR -->
+<div id="editor" class="screen">
+  <div>
+    <h2>Editor de Vídeo</h2>
+    <div class="editor">
+      <p>Aqui vai o editor (timeline, vídeo, etc)</p>
+    </div>
+    <br>
+    <button onclick="back()">Voltar</button>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function login(){
+  show('dashboard');
+}
+
+function logout(){
+  show('auth');
+}
+
+function openEditor(){
+  show('editor');
+}
+
+function back(){
+  show('dashboard');
+}
+</script>
 
 </body>
 </html>

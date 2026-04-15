@@ -62,6 +62,7 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   transition: opacity .4s ease, transform .4s ease;
   transform: scale(1.02);
 }
+
 .screen.active {
   opacity: 1; pointer-events: all; transform: scale(1);
 }
@@ -81,10 +82,11 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 
 .auth-orb--1 { width:500px; height:500px; top:-10%; left:-5%; background: var(--accent); }
 .auth-orb--2 { width:400px; height:400px; bottom:-10%; right:-5%; background: var(--accent-2); }
+.auth-orb--3 { width:300px; height:300px; top:50%; left:50%; background: #ff006620; }
 
 @keyframes orbFloat {
   0% { transform: translate(0,0) scale(1); }
-  100% { transform: translate(20px,-20px) scale(1.05); }
+  100% { transform: translate(10px,-10px) scale(1.05); }
 }
 
 /* === BOTÃO PRINCIPAL === */
@@ -92,7 +94,8 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   display: flex; align-items: center; justify-content: center;
   padding: 1rem 2rem;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #06060a; font-weight: 700;
+  color: #06060a;
+  font-weight: 700;
   border-radius: var(--radius);
   transition: all var(--transition);
 }
@@ -104,8 +107,10 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 
 /* === TOPBAR === */
 .topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 1.5rem; height: 60px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 60px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border);
 }
@@ -133,5 +138,7 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 
 /* === RESPONSIVO === */
 @media (max-width: 600px) {
-  .dashboard-main { padding: 1rem; }
+  .dashboard-main {
+    padding: 1rem;
+  }
 }

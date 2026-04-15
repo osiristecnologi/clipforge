@@ -1,336 +1,95 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClipForge — Video Editor</title>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Anybody:wght@400;600;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons (modern icons) -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>ClipForge</title>
 
   <style>
-    :root {
-      --bg-0: #06060a;
-      --bg-1: #0c0c14;
-      --bg-2: #12121e;
-      --bg-3: #1a1a2e;
-      --bg-4: #22223a;
-      --surface: #161624ee;
-      --border: #ffffff0a;
-      --text-1: #eef0ff;
-      --text-2: #a0a4c0;
-      --text-3: #5c5f7e;
-      --accent: #00E5FF;
-      --accent-2: #7C4DFF;
-      --radius: 14px;
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: var(--bg-0);
-      color: var(--text-1);
-      line-height: 1.5;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0f1a;
+      color: #fff;
     }
 
-    .header {
-      background: var(--bg-1);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
+    header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      align-items: center;
+      padding: 15px;
+      background: #0d1323;
     }
 
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      color: var(--accent);
+      font-size: 20px;
+      font-weight: bold;
+      color: #4fd1ff;
     }
 
-    .lang-switcher {
-      display: flex;
-      gap: 8px;
-      background: var(--bg-2);
-      padding: 4px;
-      border-radius: 9999px;
-    }
-
-    .lang-btn {
-      padding: 6px 14px;
+    .btn {
+      background: linear-gradient(90deg, #00d4ff, #7b61ff);
       border: none;
-      background: transparent;
-      color: var(--text-2);
-      border-radius: 9999px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .lang-btn.active {
-      background: var(--accent);
+      padding: 10px 15px;
+      border-radius: 10px;
       color: #000;
-      font-weight: 600;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .screen {
-      display: none;
-      min-height: 100vh;
-      padding: 24px;
+    .card {
+      margin: 20px;
+      padding: 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1a1f3a, #0d1323);
     }
 
-    .screen.active {
-      display: block;
+    .card h1 {
+      margin: 0;
     }
 
-    .auth-container {
-      min-height: 100vh;
+    .highlight {
+      color: #4fd1ff;
+    }
+
+    .formats {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--bg-1), var(--bg-0));
+      gap: 10px;
+      padding: 20px;
     }
 
-    .auth-card {
-      background: var(--surface);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 48px 40px;
-      width: 100%;
-      max-width: 420px;
+    .format {
+      flex: 1;
+      background: #111;
+      padding: 15px;
+      border-radius: 15px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
-
-    .auth-card h1 {
-      font-size: 42px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    input {
-      width: 100%;
-      padding: 16px 20px;
-      margin: 12px 0;
-      background: var(--bg-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text-1);
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      color: #000;
-      border: none;
-      border-radius: var(--radius);
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: transform 0.2s;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-    }
-
-    .icon { width: 20px; height: 20px; }
   </style>
 </head>
+
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo">
-      <i data-lucide="film" class="icon"></i>
-      <span>ClipForge</span>
-    </div>
-    
-    <div class="lang-switcher" id="lang-switcher">
-      <button class="lang-btn active" data-lang="pt">PT</button>
-      <button class="lang-btn" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="es">ES</button>
-      <button class="lang-btn" data-lang="zh">中</button>
-    </div>
+  <header>
+    <div class="logo">ClipForge</div>
+    <button class="btn">Novo Projeto</button>
   </header>
 
-  <!-- ================= AUTH ================= -->
-  <div id="screen-auth" class="screen active">
-    <div class="auth-container">
-      <div class="auth-card">
-        <h1 data-i18n="app_name">ClipForge</h1>
-        <p data-i18n="welcome" style="color:var(--text-2); margin-bottom:32px;">
-          Crie vídeos incríveis com facilidade
-        </p>
-
-        <form id="form-login" onsubmit="return false">
-          <input type="email" id="email" placeholder="Seu email" data-i18n-placeholder="email">
-          <input type="password" id="password" placeholder="Senha" data-i18n-placeholder="password">
-          <button onclick="doLogin()" data-i18n="login">Entrar</button>
-        </form>
-
-        <p style="margin-top:24px; color:var(--text-3); font-size:14px;">
-          <span data-i18n="no_account">Não tem conta?</span> 
-          <a href="#" style="color:var(--accent);">Criar agora</a>
-        </p>
-      </div>
-    </div>
+  <div class="card">
+    <h1>Crie vídeos <span class="highlight">incríveis</span></h1>
+    <p>Editor profissional com IA.</p>
+    <button class="btn" onclick="criarProjeto()">Começar Novo Projeto</button>
   </div>
 
-  <!-- ================= DASHBOARD ================= -->
-  <div id="screen-dashboard" class="screen">
-    <h1 data-i18n="dashboard">Dashboard</h1>
-    <button onclick="navigateTo('editor')" data-i18n="new_project">
-      + Novo Projeto
-    </button>
+  <div class="formats">
+    <div class="format">Reels 9:16</div>
+    <div class="format">TikTok 9:16</div>
   </div>
 
-  <!-- ================= EDITOR ================= -->
-  <div id="screen-editor" class="screen">
-    <button onclick="navigateTo('dashboard')" data-i18n="back">← Voltar</button>
-    <h1 data-i18n="video_editor">Editor de Vídeo</h1>
-    <!-- Aqui você pode expandir o editor completo depois -->
-  </div>
-
-<script>
-// ==================== I18N - Traduções ====================
-const translations = {
-  pt: {
-    app_name: "ClipForge",
-    welcome: "Crie vídeos incríveis com facilidade",
-    email: "Seu email",
-    password: "Senha",
-    login: "Entrar",
-    no_account: "Não tem conta?",
-    dashboard: "Dashboard",
-    new_project: "+ Novo Projeto",
-    back: "← Voltar",
-    video_editor: "Editor de Vídeo"
-  },
-  en: {
-    app_name: "ClipForge",
-    welcome: "Create amazing videos with ease",
-    email: "Your email",
-    password: "Password",
-    login: "Sign In",
-    no_account: "Don't have an account?",
-    dashboard: "Dashboard",
-    new_project: "+ New Project",
-    back: "← Back",
-    video_editor: "Video Editor"
-  },
-  es: {
-    app_name: "ClipForge",
-    welcome: "Crea videos increíbles con facilidad",
-    email: "Tu correo electrónico",
-    password: "Contraseña",
-    login: "Iniciar sesión",
-    no_account: "¿No tienes cuenta?",
-    dashboard: "Panel",
-    new_project: "+ Nuevo Proyecto",
-    back: "← Atrás",
-    video_editor: "Editor de Video"
-  },
-  zh: {
-    app_name: "ClipForge",
-    welcome: "轻松制作精彩视频",
-    email: "您的邮箱",
-    password: "密码",
-    login: "登录",
-    no_account: "还没有账号？",
-    dashboard: "仪表盘",
-    new_project: "+ 新项目",
-    back: "← 返回",
-    video_editor: "视频编辑器"
-  }
-};
-
-let currentLang = 'pt';
-
-// ==================== Funções ====================
-function setLanguage(lang) {
-  currentLang = lang;
-  
-  // Atualiza botões de idioma
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.lang === lang);
-  });
-
-  // Atualiza todos os textos
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang][key]) {
-      el.textContent = translations[lang][key];
+  <script>
+    function criarProjeto() {
+      alert("Novo projeto criado 🚀");
     }
-  });
-
-  // Atualiza placeholders
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (translations[lang][key]) {
-      el.placeholder = translations[lang][key];
-    }
-  });
-
-  // Atualiza lang do HTML
-  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang + '-' + (lang === 'pt' ? 'BR' : lang.toUpperCase());
-}
-
-window.navigateTo = function(screen) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
-};
-
-window.doLogin = function() {
-  const email = document.getElementById('email').value;
-  if (!email) {
-    alert(translations[currentLang].email + " é obrigatório");
-    return;
-  }
-  
-  setTimeout(() => {
-    navigateTo('dashboard');
-  }, 600);
-};
-
-// ==================== Inicialização ====================
-document.addEventListener('DOMContentLoaded', () => {
-  // Inicializa ícones Lucide
-  lucide.createIcons();
-
-  // Configura troca de idioma
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setLanguage(btn.dataset.lang);
-    });
-  });
-
-  // Define idioma inicial (baseado no navegador ou fixo)
-  const browserLang = navigator.language.split('-')[0];
-  const supportedLangs = ['pt', 'en', 'es', 'zh'];
-  const initialLang = supportedLangs.includes(browserLang) ? browserLang : 'pt';
-  
-  setLanguage(initialLang);
-});
-</script>
+  </script>
 
 </body>
 </html>

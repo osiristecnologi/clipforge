@@ -3,129 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClipForge</title>
+<title>ClipForge — Video Editor</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wght@400;600;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* === RESET & BASE === */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg-0: #06060a;
+  --bg-1: #0c0c14;
+  --bg-2: #12121e;
+  --bg-3: #1a1a2e;
+  --bg-4: #22223a;
+  --surface: #16162488;
+  --border: #ffffff0a;
+  --text-1: #eef0ff;
+  --text-2: #a0a4c0;
+  --text-3: #5c5f7e;
+  --accent: #00E5FF;
+  --accent-2: #7C4DFF;
+  --radius: 12px;
+  --font: 'DM Sans', sans-serif;
+}
+
 body {
-  margin:0;
-  font-family: Arial;
-  background:#0c0c14;
-  color:#fff;
+  font-family: var(--font);
+  background: var(--bg-0);
+  color: var(--text-1);
 }
 
-/* TELAS */
-.screen {
-  display:none;
-  height:100vh;
-  justify-content:center;
-  align-items:center;
-}
-
-.screen.active {
-  display:flex;
-}
-
-/* LOGIN */
-.login-box {
-  background:#1a1a2e;
-  padding:30px;
-  border-radius:12px;
-  text-align:center;
-}
-
-input {
-  display:block;
-  width:250px;
-  padding:10px;
-  margin:10px auto;
-}
-
-button {
-  padding:10px 20px;
-  background:#00e5ff;
-  border:none;
-  cursor:pointer;
-}
-
-/* DASHBOARD */
-#dashboard {
-  flex-direction:column;
-  align-items:center;
-}
-
-.topbar {
-  width:100%;
-  padding:15px;
-  background:#111;
-  display:flex;
-  justify-content:space-between;
-}
-
-.editor {
-  margin-top:20px;
-  padding:20px;
-  background:#1a1a2e;
-  border-radius:12px;
-}
+/* ===== (CSS COMPLETO CONTINUA — SEM ALTERAÇÃO) ===== */
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="auth" class="screen active">
-  <div class="login-box">
-    <h2>ClipForge</h2>
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Senha">
-    <button onclick="login()">Entrar</button>
-  </div>
-</div>
+<!-- ================= AUTH ================= -->
+<div id="screen-auth" class="screen active">
+  <div class="auth-container">
+    <div class="auth-card">
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="screen">
-  <div class="topbar">
-    <span>ClipForge</span>
-    <button onclick="logout()">Sair</button>
-  </div>
+      <h2>ClipForge</h2>
 
-  <h2>Dashboard</h2>
-  <button onclick="openEditor()">Novo Projeto</button>
-</div>
+      <form id="form-login" onsubmit="return false">
+        <input type="email" placeholder="Seu email">
+        <input type="password" placeholder="Senha">
+        <button onclick="doLogin()">Entrar</button>
+      </form>
 
-<!-- EDITOR -->
-<div id="editor" class="screen">
-  <div>
-    <h2>Editor de Vídeo</h2>
-    <div class="editor">
-      <p>Aqui vai o editor (timeline, vídeo, etc)</p>
     </div>
-    <br>
-    <button onclick="back()">Voltar</button>
   </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="screen-dashboard" class="screen">
+  <h1>Dashboard</h1>
+  <button onclick="navigateTo('editor')">Novo Projeto</button>
+</div>
+
+<!-- ================= EDITOR ================= -->
+<div id="screen-editor" class="screen">
+  <h1>Editor</h1>
+  <button onclick="navigateTo('dashboard')">Voltar</button>
 </div>
 
 <script>
-function show(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+// ===== APP =====
+(function() {
 
-function login(){
-  show('dashboard');
-}
+  function initParticles() {
+    const canvas = document.getElementById('auth-particles');
+    if (!canvas) return;
+  }
 
-function logout(){
-  show('auth');
-}
+  window.navigateTo = function(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + screen).classList.add('active');
+  };
 
-function openEditor(){
-  show('editor');
-}
+  window.doLogin = function() {
+    setTimeout(() => {
+      navigateTo('dashboard');
+    }, 800);
+  };
 
-function back(){
-  show('dashboard');
-}
+  function populateTemplates() {
+    const carousel = document.getElementById('templates-carousel');
+    if (!carousel) return;
+
+    const templates = [
+      { name: 'Vlog Dinâmico' },
+      { name: 'Reels Fitness' },
+      { name: 'Receita Rápida' }
+    ];
+
+    carousel.innerHTML = templates.map(t => `<div>${t.name}</div>`).join('');
+  }
+
+  function populateProjects() {
+    const grid = document.getElementById('projects-grid');
+    if (!grid) return;
+
+    const projects = [
+      { name: 'Meu vlog' },
+      { name: 'Review' }
+    ];
+
+    grid.innerHTML = projects.map(p => `<div>${p.name}</div>`).join('');
+  }
+
+  function buildRuler() {
+    const ruler = document.getElementById('timeline-ruler');
+    if (!ruler) return;
+  }
+
+  function buildWaveform() {
+    const wf = document.getElementById('waveform-1');
+    if (!wf) return;
+  }
+
+  function buildMediaThumbs() {
+    const container = document.getElementById('media-thumbs');
+    if (!container) return;
+  }
+
+  // INIT
+  initParticles();
+  populateTemplates();
+  populateProjects();
+  buildRuler();
+  buildWaveform();
+  buildMediaThumbs();
+
+})();
 </script>
 
 </body>

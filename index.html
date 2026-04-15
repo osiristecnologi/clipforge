@@ -2,12 +2,39 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ClipForge</title>
+
+  <!-- FONTES -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div id="app"></div>
+<!-- LOGIN -->
+<div id="app">
+  <h2>Login</h2>
 
-  <script src="app.js"></script>
+  <input type="email" id="email" placeholder="Seu email">
+  <br><br>
+
+  <input type="password" id="senha" placeholder="Sua senha">
+  <br><br>
+
+  <button onclick="login()">Entrar</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none;">
+  <h1>Bem-vindo ao ClipForge 🚀</h1>
+  <button onclick="logout()">Sair</button>
+</div>
+
+<!-- SCRIPT -->
+<script src="app.js"></script>
+
 </body>
 </html>
